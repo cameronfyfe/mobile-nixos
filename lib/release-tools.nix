@@ -1,4 +1,7 @@
-{ pkgs ? null }: 
+{
+  pkgs ? null
+, system ? builtins.currentSystem
+}:
 
 if pkgs == null then (builtins.throw "The `pkgs` argument needs to be provided to release-tools.nix") else
 let
@@ -26,7 +29,7 @@ rec {
       ++ (import "${toString pkgs.path}/nixos/modules/module-list.nix")
     )
   }: evalConfig {
-    inherit baseModules;
+    inherit baseModules system;
     modules =
       (if device ? special
       then [ device.config ]

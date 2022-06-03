@@ -7,6 +7,7 @@
   pkgs ? null
   # The identifier of the device this should be built for.
   # (This gets massaged later on)
+, system ? builtins.currentSystem
 , device ? null
 , configuration
   # Internally used to tack on configuration by release.nix
@@ -26,7 +27,7 @@ let
     else throw "Please provide a device name using e.g. `--argstr device $DEVICE`."
   ;
 
-  inherit (import ./release-tools.nix { inherit pkgs; }) evalWith;
+  inherit (import ./release-tools.nix { inherit pkgs system; }) evalWith;
 
   # The "default" eval.
   eval = evalWith {
